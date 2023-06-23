@@ -434,6 +434,14 @@ if not defined nonpm (
   if errorlevel 1 echo Cannot copy npx && goto package_error
   copy /Y ..\deps\npm\bin\npx.cmd %TARGET_NAME%\ > nul
   if errorlevel 1 echo Cannot copy npx.cmd && goto package_error
+  if exist ..\deps\npm\bin\npm.ps1 (
+    :: npm has not always included PowerShell scripts, so we check
+    :: for its existence before attempting to copy them.
+    copy /Y ..\deps\npm\bin\npm.ps1 %TARGET_NAME%\ > nul
+    if errorlevel 1 echo Cannot copy npm.ps1 && goto package_error
+    copy /Y ..\deps\npm\bin\npx.ps1 %TARGET_NAME%\ > nul
+    if errorlevel 1 echo Cannot copy npx.ps1 && goto package_error
+  )
 )
 
 if not defined nocorepack (
